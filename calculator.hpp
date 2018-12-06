@@ -1,5 +1,5 @@
 // @file      calculator.hpp
-// @brief     calculator::eval(const std::string&) evaluates an integer
+// @brief     calculator::eval(const string&) evaluates an integer
 //            arithmetic expression and returns the result. If an error
 //            occurs a calculator::error exception is thrown.
 //            <https://github.com/kimwalisch/calculator>
@@ -35,7 +35,7 @@
 //
 // == About the algorithm used ==
 //
-// calculator::eval(std::string&) relies on the ExpressionParser
+// calculator::eval(string&) relies on the ExpressionParser
 // class which is a simple C++ operator precedence parser with infix notation for integer arithmetic expressions.
 // ExpressionParser has its roots in a JavaScript parser published at: http://stackoverflow.com/questions/28256/equation-expression-parser-with-precedence/114961#114961
 // The same author has also published an article about his operator precedence algorithm at PerlMonks: http://www.perlmonks.org/?node_id=554516
@@ -49,29 +49,29 @@
 #include <stack>
 #include <stdexcept>
 #include <string>
+using namespace std;
 
 namespace calculator {
-
 // calculator::eval() throws a calculator::error if it fails to evaluate the expression string.
-class error : public std::runtime_error {
+class error : public runtime_error {
  public:
-	error(const std::string& expr, const std::string& message): std::runtime_error(message), expr_(expr) {}
+	error(const string& expr, const string& message): runtime_error(message), expr_(expr) {}
 #if __cplusplus < 201103L
 	~error() throw() {}
 #endif
-	std::string expression() const {
+	string expression() const {
 		return expr_;
 	}
 
  private:
-	std::string expr_;
+	string expr_;
 };
 
 template <typename T>
 class ExpressionParser {
  public:
 	// Evaluate an integer arithmetic expression and return its result. @throw error if parsing fails.
-	T eval(const std::string& expr) {
+	T eval(const string& expr) {
 		T result = 0;
 		index_ = 0;
 		expr_ = expr;
@@ -93,7 +93,7 @@ class ExpressionParser {
 
 	// Get the integer value of a character.
 	T eval(char c) {
-		std::string expr(1, c);
+		string expr(1, c);
 		return eval(expr);
 	}
 
@@ -102,10 +102,10 @@ class ExpressionParser {
 		OPERATOR_NULL,
 		OPERATOR_ADDITION,	// +
 		OPERATOR_SUBTRACTION,	// -
-		OPERATOR_MULTIPLICATION,	// *
+		OPERATOR_MULTIPLICATION,	// * or x
 		OPERATOR_DIVISION,	// /
 		OPERATOR_MODULO,	// %
-		OPERATOR_POWER,	// **
+		OPERATOR_POWER,	// ** or ^
 		OPERATOR_EXPONENT	// e, E
 	};
 
@@ -131,11 +131,11 @@ class ExpressionParser {
 	};
 
 	// Expression string
-	std::string expr_;
+	string expr_;
 	// Current expression index, incremented whilst parsing
-	std::size_t index_;
+	size_t index_;
 	// The current operator and its left value are pushed onto the stack if the operator on top of the stack has lower precedence.
-	std::stack<OperatorValue> stack_;
+	stack<OperatorValue> stack_;
 
 	// Exponentiation by squaring, x^n.
 	static T pow(T x, T n) {
@@ -157,12 +157,12 @@ class ExpressionParser {
 
 	T checkZero(T value) const {
 		if (value == 0) {
-			std::string divOperators("/%");
-			std::size_t division = expr_.find_last_of(divOperators, index_ - 2);
-			std::ostringstream msg;
+			string divOperators("/%");
+			size_t division = expr_.find_last_of(divOperators, index_ - 2);
+			ostringstream msg;
 			msg << "Parser error: division by 0";
 
-			if (division != std::string::npos)
+			if (division != string::npos)
 				msg << " (error token is \""
 						<< expr_.substr(division, expr_.size() - division)
 						<< "\")";
@@ -204,14 +204,14 @@ class ExpressionParser {
 	}
 
 	// Parse str at the current expression index. @throw error if parsing fails.
-	void expect(const std::string& str) {
+	void expect(const string& str) {
 		if (expr_.compare(index_, str.size(), str) != 0)
 			unexpected();
 		index_ += str.size();
 	}
 
 	void unexpected() const {
-		std::ostringstream msg;
+		ostringstream msg;
 		msg << "Syntax error: unexpected token \""
 				<< expr_.substr(index_, expr_.size() - index_)
 				<< "\" at index "
@@ -221,7 +221,7 @@ class ExpressionParser {
 
 	// Eat all white space characters at the current expression index.
 	void eatSpaces() {
-		while (std::isspace(getCharacter()) != 0)
+		while (isspace(getCharacter()) != 0)
 			index_++;
 	}
 
@@ -306,7 +306,7 @@ class ExpressionParser {
 		if (index_ + 2 < expr_.size()) {
 			char x = expr_[index_ + 1];
 			char h = expr_[index_ + 2];
-			return (std::tolower(x) == 'x' && toInteger(h) <= 0xf);
+			return (tolower(x) == 'x' && toInteger(h) <= 0xf);
 		}
 		return false;
 	}
@@ -394,7 +394,7 @@ class ExpressionParser {
 };
 
 template <typename T>
-inline T eval(const std::string& expression) {
+inline T eval(const string& expression) {
 	ExpressionParser<T> parser;
 	return parser.eval(expression);
 }
@@ -405,7 +405,7 @@ inline T eval(char c) {
 	return parser.eval(c);
 }
 
-inline int eval(const std::string& expression) {
+inline int eval(const string& expression) {
 	return eval<int>(expression);
 }
 

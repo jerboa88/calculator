@@ -1,8 +1,6 @@
 // @file      calculator.hpp
-// @brief     calculator::eval(const string&) evaluates an integer
-//            arithmetic expression and returns the result. If an error
-//            occurs a calculator::error exception is thrown.
-//            <https://github.com/kimwalisch/calculator>
+// @brief     calculator::eval(const string&) evaluates an floating-point arithmetic expression and returns the result. If an error occurs a calculator::error exception is thrown.
+//            <https://github.com/jerboa88/calculator>
 // @author    Kim Walisch, <kim.walisch@gmail.com>
 // @copyright Copyright (C) 2018 John Goodliff / Copyright (C) 2013-2018 Kim Walisch
 // @license   BSD 2-Clause, https://opensource.org/licenses/BSD-2-Clause
@@ -33,16 +31,16 @@
 // "(2**16) + (1 << 16) >> 0X5"        = 4096
 // "5*-(2**(9+7))/3+5*(1 & 0xFf123)"   = -109221
 //
-// == About the algorithm used ==
+// == About the algorithm ==
 //
-// calculator::eval(string&) relies on the ExpressionParser
-// class which is a simple C++ operator precedence parser with infix notation for integer arithmetic expressions.
+// calculator::eval(string&) relies on the ExpressionParser class which is a simple C++ operator precedence parser with infix notation for integer arithmetic expressions.
 // ExpressionParser has its roots in a JavaScript parser published at: http://stackoverflow.com/questions/28256/equation-expression-parser-with-precedence/114961#114961
 // The same author has also published an article about his operator precedence algorithm at PerlMonks: http://www.perlmonks.org/?node_id=554516
 
 #ifndef CALCULATOR_HPP
 #define CALCULATOR_HPP
 
+#include <algorithm>
 #include <cctype>
 #include <cstddef>
 #include <sstream>
@@ -198,31 +196,31 @@ class ExpressionParser {
 
 	// Returns the character at the current expression index or 0 if the end of the expression is reached.
 	char getCharacter() const {
-		if (!isEnd())
+		if (!isEnd()) {
 			return expr_[index_];
+		}
 		return 0;
 	}
 
 	// Parse str at the current expression index. @throw error if parsing fails.
 	void expect(const string& str) {
-		if (expr_.compare(index_, str.size(), str) != 0)
+		if (expr_.compare(index_, str.size(), str) != 0) {
 			unexpected();
+		}
 		index_ += str.size();
 	}
 
 	void unexpected() const {
 		ostringstream msg;
-		msg << "Syntax error: unexpected token \""
-				<< expr_.substr(index_, expr_.size() - index_)
-				<< "\" at index "
-				<< index_;
+		msg << "Syntax error: unexpected token \"" << expr_.substr(index_, expr_.size() - index_) << "\" at index " << index_;
 		throw calculator::error(expr_, msg.str());
 	}
 
 	// Eat all white space characters at the current expression index.
 	void eatSpaces() {
-		while (isspace(getCharacter()) != 0)
+		while (isspace(getCharacter()) != 0) {
 			index_++;
+		}
 	}
 
 	// Parse a binary operator at the current expression index. @return Operator with precedence and associativity.
@@ -292,25 +290,6 @@ class ExpressionParser {
 		return value;
 	}
 
-	T parseHex() {
-		index_ = index_ + 2;
-		T value = 0;
-
-		for (T h; (h = getInteger()) <= 0xf; index_++) {
-			value = value * 0x10 + h;
-    }
-		return value;
-	}
-
-	bool isHex() const {
-		if (index_ + 2 < expr_.size()) {
-			char x = expr_[index_ + 1];
-			char h = expr_[index_ + 2];
-			return (tolower(x) == 'x' && toInteger(h) <= 0xf);
-		}
-		return false;
-	}
-
 	// Parse an integer value at the current expression index. The unary `+', `-' and `~' operators and opening parentheses `(' cause recursion.
 	T parseValue() {
 		T val = 0;
@@ -318,13 +297,6 @@ class ExpressionParser {
 
 		switch (getCharacter()) {
 			case '0':
-				if (isHex()) {
-					val = parseHex();
-        }
-				else {
-					val = parseDecimal();
-        }
-				break;
 			case '1':
 			case '2':
 			case '3':
@@ -357,8 +329,9 @@ class ExpressionParser {
 				val = parseValue() * static_cast<T>(-1);
 				break;
 			default:
-				if (!isEnd())
+				if (!isEnd()) {
 					unexpected();
+				}
 				throw calculator::error(expr_, "Syntax error: value expected at end of expression");
 		}
 		return val;

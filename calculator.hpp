@@ -14,10 +14,10 @@
 //
 // +           Addition                Left              10
 // -           Subtraction             Left              10
-// *           Multiplication          Left              20
+// * or x      Multiplication          Left              20
 // /           Division                Left              20
 // %           Modulo                  Left              20
-// **          Raise to power          Right             30
+// ** or ^     Raise to power          Right             30
 // e, E        Scientific notation     Right             40
 //
 // The operator precedence has been set according to (uses the C and C++ operator precedence): https://en.wikipedia.org/wiki/Order_of_operations
@@ -241,10 +241,17 @@ class ExpressionParser {
 			case '%':
 				index_++;
 				return Operator(OPERATOR_MODULO, 20, 'L');
+      case 'x':
+				index_++;
+				return Operator(OPERATOR_MULTIPLICATION, 20, 'L');
 			case '*':
 				index_++;
-				if (getCharacter() != '*')
+				if (getCharacter() != '*') {
 					return Operator(OPERATOR_MULTIPLICATION, 20, 'L');
+        }
+				index_++;
+				return Operator(OPERATOR_POWER, 30, 'R');
+      case '^':
 				index_++;
 				return Operator(OPERATOR_POWER, 30, 'R');
 			case 'e':

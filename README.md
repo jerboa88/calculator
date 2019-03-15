@@ -1,12 +1,13 @@
 # Calculator [C++]
 ![](https://img.shields.io/badge/type-C++-red.svg "Project type")
-![](https://img.shields.io/github/repo-size/jerboa88/README-Template.svg "Repository size")
-[![](https://img.shields.io/github/license/jerboa88/README-Template.svg "Project license")](LICENSE)
+![](https://img.shields.io/github/repo-size/jerboa88/calculator.svg "Repository size")
+[![](https://img.shields.io/github/license/jerboa88/calculator.svg "Project license")](LICENSE)
+
 
 ```calculator.hpp``` is a header-only C++ library for parsing and
 evaluating floating-point arithmetic expressions e.g. ```"(2^2 + 1) / 3"```. It compiles with any C++ compiler and should work with any floating-point type in the future.
 
-calculator is a simple but fast
+Calculator is a simple but fast
 [operator-precedence parser](https://en.wikipedia.org/wiki/Operator-precedence_parser).
 
 
@@ -55,7 +56,6 @@ template <typename T>
 T calculator::eval<T>(const std::string& expression);
 ```
 
-
 ## How to use it
 ```calculator::eval("1+2")``` takes a string with an floating-point arithmetic expression as an argument, evaluates the arithmetic expression and returns
 the result. If the expression string is not a valid floating-point arithmetic expression a ```calculator::error``` exception is thrown.
@@ -78,3 +78,7 @@ int main() {
 	return 0;
 }
 ```
+
+
+## License
+This project is licensed under the BSD 2-Clause License. See [LICENSE](LICENSE) for details.

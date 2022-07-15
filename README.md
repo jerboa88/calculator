@@ -12,7 +12,7 @@
   </p>
   
   <p class="projectDesc">
-    MiniCalc C++ is a header-only C++ library for parsing and evaluating floating-point arithmetic expressions.
+    A C++ library for parsing and evaluating arithmetic expressions
   </p>
   
   <br/>

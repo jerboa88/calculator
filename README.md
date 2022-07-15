@@ -1,14 +1,25 @@
-# Calculator [C++]
-![](https://img.shields.io/badge/type-C++-red.svg "Project type")
-![](https://img.shields.io/github/repo-size/jerboa88/calculator.svg "Repository size")
-[![](https://img.shields.io/github/license/jerboa88/calculator.svg "Project license")](LICENSE)
+<!-- Project Header -->
+<div align="center">
+  <h1 class="projectName">MiniCalc C++</h1>
+
+  <p class="projectBadges">
+    <img src="https://img.shields.io/badge/type-CLI_App-f44336.svg" alt="Project type" title="Project type"/>
+    <img src="https://img.shields.io/github/languages/top/jerboa88/calculator.svg" alt="Language" title="Language"/>
+    <img src="https://img.shields.io/github/repo-size/jerboa88/calculator.svg" alt="Repository size" title="Repository size"/>
+    <a href="LICENSE">
+      <img src="https://img.shields.io/github/license/jerboa88/calculator.svg" alt="Project license" title="Project license"/>
+    </a>
+  </p>
+  
+  <p class="projectDesc">
+    MiniCalc C++ is a header-only C++ library for parsing and evaluating floating-point arithmetic expressions.
+  </p>
+  
+  <br/>
+</div>
 
 
-```calculator.hpp``` is a header-only C++ library for parsing and
-evaluating floating-point arithmetic expressions e.g. ```"(2^2 + 1) / 3"```. It compiles with any C++ compiler and should work with any floating-point type in the future.
-
-Calculator is a simple but fast
-[operator-precedence parser](https://en.wikipedia.org/wiki/Operator-precedence_parser).
+MiniCalc C++ is a simple but fast operator-precedence parser. It compiles with any C++ compiler and should work with any floating-point type in the future.
 
 
 ## Supported operators

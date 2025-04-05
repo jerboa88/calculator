@@ -1,0 +1,10 @@
+{
+  "$schema": "https://johng.io/schema/project-metadata.json",
+  "name": "MiniCalc C++",
+	"category": "App",
+  "schema": {
+    "type": "Software",
+    "applicationCategory": "Utilities",
+    "operatingSystem": "Any"
+  }
+}
